@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TRAMITES, SEDES, TIPOS_DOC, HORAS } from "./data";
+import { TRAMITES, TIPOS_DOC, HORAS } from "./data";
 import "./App.css";
 
 const logo = "/logo-ccb.svg";
@@ -15,7 +15,6 @@ const VACIO = {
   correo: "",
   telefono: "",
   tramite: TRAMITES[0],
-  sede: SEDES[0].id,
   fecha: "",
   hora: HORAS[0],
   notas: "",
@@ -23,7 +22,7 @@ const VACIO = {
 
 export default function App() {
   const [f, setF] = useState(VACIO);
-  const [estado, setEstado] = useState("idle"); // idle | enviando | ok | error
+  const [estado, setEstado] = useState("idle"); // idle | enviando | ok
   const [err, setErr] = useState("");
   const [cita, setCita] = useState(null);
 
@@ -38,20 +37,19 @@ export default function App() {
     const dow = new Date(f.fecha + "T00:00").getDay();
     if (dow === 0 || dow === 6) return setErr("Solo hay atención de lunes a viernes.");
 
-    const sede = SEDES.find((s) => s.id === f.sede);
     setEstado("enviando");
     try {
       const r = await fetch("/api/citas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...f, sede_nombre: sede.nombre }),
+        body: JSON.stringify(f),
       });
       const data = await r.json();
       if (!r.ok) {
         setEstado("idle");
         return setErr(data.error || "No se pudo agendar. Intenta de nuevo.");
       }
-      setCita({ ...data.cita, sedeDir: sede.dir });
+      setCita(data.cita);
       setEstado("ok");
     } catch {
       setEstado("idle");
@@ -81,80 +79,91 @@ export default function App() {
             <div className="intro">
               <h1>Agenda tu cita</h1>
               <p>
-                Solicita tu cita para trámites presenciales en la Cámara de Comercio de Bogotá.
+                Solicita tu cita para trámites en la Cámara de Comercio de Bogotá.
                 Atención de lunes a viernes, 8:00 a. m. a 5:00 p. m.
               </p>
             </div>
 
             <form className="card" onSubmit={submit}>
               <fieldset disabled={estado === "enviando"}>
-                <legend>Tus datos</legend>
-                <label>
-                  Nombre completo
-                  <input value={f.nombre} onChange={set("nombre")} required placeholder="Ej. Ana María Rodríguez" />
-                </label>
-                <div className="row">
-                  <label>
-                    Tipo de documento
-                    <select value={f.tipo_doc} onChange={set("tipo_doc")}>
-                      {TIPOS_DOC.map((t) => (
-                        <option key={t}>{t}</option>
-                      ))}
-                    </select>
+                <div className="seccion">
+                  <span className="seccion-tit">Tus datos</span>
+
+                  <label className="field">
+                    <span>Nombre completo</span>
+                    <input value={f.nombre} onChange={set("nombre")} required maxLength={120}
+                      placeholder="Ej. Ana María Rodríguez" />
                   </label>
-                  <label>
-                    Número de documento
-                    <input value={f.num_doc} onChange={set("num_doc")} required placeholder="1234567890" />
-                  </label>
-                </div>
-                <div className="row">
-                  <label>
-                    Correo electrónico
-                    <input type="email" value={f.correo} onChange={set("correo")} required placeholder="tucorreo@ejemplo.com" />
-                  </label>
-                  <label>
-                    Teléfono / celular
-                    <input value={f.telefono} onChange={set("telefono")} required placeholder="3001234567" />
-                  </label>
+
+                  <div className="row">
+                    <label className="field">
+                      <span>Tipo de documento</span>
+                      <div className="select">
+                        <select value={f.tipo_doc} onChange={set("tipo_doc")}>
+                          {TIPOS_DOC.map((t) => (
+                            <option key={t}>{t}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </label>
+                    <label className="field">
+                      <span>Número de documento</span>
+                      <input value={f.num_doc} onChange={set("num_doc")} required maxLength={20}
+                        inputMode="numeric" placeholder="1234567890" />
+                    </label>
+                  </div>
+
+                  <div className="row">
+                    <label className="field">
+                      <span>Correo electrónico</span>
+                      <input type="email" value={f.correo} onChange={set("correo")} required maxLength={120}
+                        placeholder="tucorreo@ejemplo.com" />
+                    </label>
+                    <label className="field">
+                      <span>Teléfono / celular</span>
+                      <input value={f.telefono} onChange={set("telefono")} required maxLength={15}
+                        inputMode="tel" placeholder="3001234567" />
+                    </label>
+                  </div>
                 </div>
 
-                <legend className="mt">Detalles de la cita</legend>
-                <label>
-                  Tipo de trámite
-                  <select value={f.tramite} onChange={set("tramite")}>
-                    {TRAMITES.map((t) => (
-                      <option key={t}>{t}</option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  Sede
-                  <select value={f.sede} onChange={set("sede")}>
-                    {SEDES.map((s) => (
-                      <option key={s.id} value={s.id}>
-                        {s.nombre} — {s.dir}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <div className="row">
-                  <label>
-                    Fecha preferida
-                    <input type="date" min={hoyISO()} value={f.fecha} onChange={set("fecha")} required />
+                <div className="seccion">
+                  <span className="seccion-tit">Detalles de la cita</span>
+
+                  <label className="field">
+                    <span>Tipo de trámite</span>
+                    <div className="select">
+                      <select value={f.tramite} onChange={set("tramite")}>
+                        {TRAMITES.map((t) => (
+                          <option key={t}>{t}</option>
+                        ))}
+                      </select>
+                    </div>
                   </label>
-                  <label>
-                    Hora preferida
-                    <select value={f.hora} onChange={set("hora")}>
-                      {HORAS.map((h) => (
-                        <option key={h}>{h}</option>
-                      ))}
-                    </select>
+
+                  <div className="row">
+                    <label className="field">
+                      <span>Fecha preferida</span>
+                      <input type="date" min={hoyISO()} value={f.fecha} onChange={set("fecha")} required />
+                    </label>
+                    <label className="field">
+                      <span>Hora preferida</span>
+                      <div className="select">
+                        <select value={f.hora} onChange={set("hora")}>
+                          {HORAS.map((h) => (
+                            <option key={h}>{h}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </label>
+                  </div>
+
+                  <label className="field">
+                    <span>Notas (opcional)</span>
+                    <textarea value={f.notas} onChange={set("notas")} rows={2} maxLength={500}
+                      placeholder="Detalles del trámite…" />
                   </label>
                 </div>
-                <label>
-                  Notas (opcional)
-                  <textarea value={f.notas} onChange={set("notas")} rows={2} placeholder="Detalles del trámite…" />
-                </label>
 
                 {err && <p className="error">{err}</p>}
                 <button className="primary" type="submit">
@@ -187,13 +196,6 @@ function Confirmacion({ cita, onNueva }) {
         <div>
           <dt>Trámite</dt>
           <dd>{cita.tramite}</dd>
-        </div>
-        <div>
-          <dt>Sede</dt>
-          <dd>
-            {cita.sede_nombre}
-            {cita.sedeDir ? ` — ${cita.sedeDir}` : ""}
-          </dd>
         </div>
         <div>
           <dt>Fecha y hora</dt>
