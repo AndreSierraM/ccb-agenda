@@ -1,16 +1,36 @@
-# React + Vite
+# CCB · Agendamiento de citas
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+App web (React + Vite) donde una persona **se registra** y **solicita una cita** para trámites de la **Cámara de Comercio de Bogotá** (renovación de matrícula, certificados, constitución de empresa, etc.).
 
-Currently, two official plugins are available:
+> Demo no oficial. Los trámites reales se hacen en https://agendamiento.ccb.org.co
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Funcionalidad
 
-## React Compiler
+- **Registro** de usuario (nombre, tipo/número de documento, correo, teléfono) con validación.
+- **Solicitud de cita**: tipo de trámite, sede, fecha (solo días hábiles, no pasadas) y hora (franjas 8:00–17:00).
+- **Mis citas**: lista con código de confirmación y opción de cancelar.
+- Persistencia local (`localStorage`) — sin backend, MVP desplegable al instante.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Datos de trámites y sedes en `src/data.js`.
 
-## Expanding the Oxlint configuration
+## Desarrollo
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```bash
+npm install
+npm run dev      # http://localhost:5173
+npm run build    # dist/
+```
+
+## Deploy
+
+Desplegado en Vercel (framework Vite autodetectado):
+
+```bash
+vercel deploy --prod
+```
+
+**Live:** https://ccb-agenda-b9z4dsmqg-cabalastechhub.vercel.app
+
+## Stack
+
+React 19 · Vite 8 · CSS plano (cero dependencias UI) · Vercel.
