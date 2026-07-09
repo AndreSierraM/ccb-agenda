@@ -1,0 +1,279 @@
+/* ---- Layout ---- */
+.app {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 16px 48px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--linea);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand h1 {
+  font-size: 17px;
+  margin: 0;
+  line-height: 1.2;
+}
+.brand p {
+  margin: 2px 0 0;
+  font-size: 13px;
+  color: var(--gris);
+}
+
+.logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--azul);
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.logo.big {
+  width: 60px;
+  height: 60px;
+  font-size: 22px;
+  margin: 0 auto 14px;
+}
+
+.userbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--gris);
+}
+
+/* ---- Tabs ---- */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.tabs button {
+  border: 1px solid var(--linea);
+  background: #fff;
+  padding: 9px 16px;
+  border-radius: 999px;
+  color: var(--gris);
+  font-weight: 600;
+  font-size: 14px;
+}
+.tabs button.on {
+  background: var(--azul);
+  border-color: var(--azul);
+  color: #fff;
+}
+.badge {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 12px;
+  margin-left: 4px;
+}
+.tabs button:not(.on) .badge {
+  background: var(--azul-l);
+  color: var(--azul);
+}
+
+/* ---- Cards / forms ---- */
+.card {
+  background: #fff;
+  border: 1px solid var(--linea);
+  border-radius: var(--radio);
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+.card h2 {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+.card.wide {
+  padding: 28px;
+}
+.sub {
+  color: var(--gris);
+  font-size: 14px;
+  margin: 0 0 18px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--texto);
+}
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+input,
+select,
+textarea {
+  font: inherit;
+  font-weight: 400;
+  padding: 11px 12px;
+  border: 1px solid var(--linea);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--texto);
+  width: 100%;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--azul);
+  box-shadow: 0 0 0 3px var(--azul-l);
+}
+textarea {
+  resize: vertical;
+}
+
+.primary {
+  background: var(--azul);
+  color: #fff;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 15px;
+  margin-top: 4px;
+}
+.primary:hover {
+  background: var(--azul-d);
+}
+
+.link {
+  background: none;
+  border: none;
+  color: var(--azul);
+  font-weight: 600;
+  padding: 0;
+}
+.link.danger {
+  color: var(--rojo);
+}
+
+.error {
+  background: #fdecea;
+  color: var(--rojo);
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin: 0;
+}
+.empty {
+  color: var(--gris);
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* ---- Auth screen ---- */
+.auth {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+}
+.auth .card {
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+}
+.auth h1 {
+  font-size: 22px;
+  margin: 0 0 4px;
+}
+.auth form {
+  text-align: left;
+  margin-top: 18px;
+}
+
+/* ---- Lista de citas ---- */
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.cita {
+  background: #fff;
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--azul);
+  border-radius: var(--radio);
+  padding: 18px 20px;
+}
+.cita-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.codigo {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  background: var(--azul-l);
+  color: var(--azul);
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 700;
+}
+.cita h3 {
+  margin: 10px 0 12px;
+  font-size: 16px;
+}
+.cita dl {
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+.cita dl div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  font-size: 14px;
+}
+.cita dt {
+  color: var(--gris);
+  font-weight: 600;
+}
+.cita dd {
+  margin: 0;
+}
+
+footer {
+  text-align: center;
+  color: var(--gris);
+  font-size: 13px;
+  margin-top: 28px;
+}
+
+@media (max-width: 520px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+  .cita dl div {
+    grid-template-columns: 90px 1fr;
+  }
+}
